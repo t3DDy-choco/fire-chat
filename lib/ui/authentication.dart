@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fire_chat';
+import 'package:fire_chat/net/flutterfire.dart';
 
 class Authentication extends StatefulWidget {
   Authentication({Key? key}) : super(key: key);
