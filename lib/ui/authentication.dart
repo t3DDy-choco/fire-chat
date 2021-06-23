@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fire_chat/net/flutterfire.dart';
 
+import 'home_view.dart';
+
 class Authentication extends StatefulWidget {
   Authentication({Key? key}) : super(key: key);
 
@@ -59,17 +61,16 @@ class _AuthenticationState extends State<Authentication> {
       ),
       child: MaterialButton(
         onPressed: () async {
-          // bool shouldNavigate =
-          //     await press(_emailField.text, _passwordField.text);
-          // if (shouldNavigate) {
-          //   Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //       builder: (context) => HomeView(),
-          //     ),
-          //   );
-          // } else
-          //   _invalidDialog("Invalid Details");
+          bool shouldNavigate =
+              await press(_emailField.text, _passwordField.text);
+          if (shouldNavigate) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HomeView(),
+              ),
+            );
+          }
         },
         child: Text(
           name,
