@@ -27,12 +27,22 @@ class AuthService {
     });
   }
 
+  Future<bool> isSignedIn() async {
+    if (authService._auth.currentUser != null ||
+        authService._googleSignIn.currentUser != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   Future<bool> signIn(String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+      updateUserData(_auth.currentUser);
       return true;
     } catch (e) {
       print(e);

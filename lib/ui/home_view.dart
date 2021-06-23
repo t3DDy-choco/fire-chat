@@ -1,4 +1,5 @@
-import 'package:fire_chat/net/flutterfire.dart';
+import 'package:fire_chat/net/auth_service.dart';
+import 'package:fire_chat/ui/search.dart';
 import 'package:flutter/material.dart';
 
 class HomeView extends StatefulWidget {
@@ -9,46 +10,61 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  final Color _amber = Colors.amber.shade900;
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Welcome to firechat!",
-                style: TextStyle(fontSize: 22.0),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 35,
-                width: MediaQuery.of(context).size.height / 35,
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 3.0,
-                height: 45.0,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25.0),
-                  color: Colors.red,
-                ),
-                child: MaterialButton(
-                  onPressed: () {
-                    authService.signOut();
-                    Navigator.pop(context);
-                  },
-                  child: Text(
-                    'Sign out',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20.0,
-                    ),
-                  ),
-                ),
-              ),
-            ],
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        title: Text(
+          'f i r e c h a t',
+          style: TextStyle(
+            fontFamily: 'monospace',
+            fontWeight: FontWeight.bold,
+            color: _amber,
           ),
         ),
+        backgroundColor: Colors.black,
+        actions: [
+          GestureDetector(
+            onTap: () {
+              authService.signOut();
+              Navigator.pop(context);
+            },
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              child: Icon(
+                Icons.exit_to_app_rounded,
+                color: _amber,
+              ),
+            ),
+          ),
+        ],
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Welcome to firechat!",
+              style: TextStyle(fontSize: 22.0),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: _amber,
+        child: Icon(Icons.search),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SearchScreen(),
+            ),
+          );
+        },
       ),
     );
   }

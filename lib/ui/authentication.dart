@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fire_chat/net/flutterfire.dart';
+import 'package:fire_chat/net/auth_service.dart';
 import 'package:fire_chat/particles/particles_flutter.dart';
 
 import 'home_view.dart';
@@ -100,6 +100,27 @@ class _AuthenticationState extends State<Authentication> {
         height: MediaQuery.of(context).size.height / size,
         width: MediaQuery.of(context).size.height / size,
       );
+
+  @override
+  void initState() {
+    super.initState();
+    checkSignIn();
+  }
+
+  Future<bool> checkSignIn() async {
+    bool user = await authService.isSignedIn();
+    if (user) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomeView(),
+        ),
+      );
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
