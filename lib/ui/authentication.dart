@@ -24,38 +24,21 @@ class _AuthenticationState extends State<Authentication> {
       width: MediaQuery.of(context).size.width / widthFactor,
       child: TextFormField(
         style: TextStyle(
-          color: Colors.white,
+          color: Colors.amber.shade900,
+          fontSize: 20.0,
         ),
         controller: controller,
         obscureText: hideText,
         decoration: InputDecoration(
           labelText: label,
           labelStyle: TextStyle(
-            color: Colors.white,
+            color: Colors.amber.shade900,
           ),
           hintText: hint,
           hintStyle: TextStyle(
-            color: Colors.white,
+            color: Colors.grey,
           ),
         ),
-      ),
-    );
-  }
-
-  _invalidDialog(String title) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: Text(title),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(context, 'OK'),
-            child: const Text(
-              'OK',
-              style: TextStyle(fontSize: 18.0),
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -72,7 +55,7 @@ class _AuthenticationState extends State<Authentication> {
       height: height,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(25.0),
-        color: Colors.white,
+        color: Colors.amber.shade900,
       ),
       child: MaterialButton(
         onPressed: () async {
@@ -91,7 +74,7 @@ class _AuthenticationState extends State<Authentication> {
         child: Text(
           name,
           style: TextStyle(
-            color: Colors.blueAccent,
+            color: Colors.white,
             fontSize: 20.0,
           ),
         ),
@@ -112,28 +95,29 @@ class _AuthenticationState extends State<Authentication> {
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
-            color: Colors.blueAccent,
+            color: Colors.white,
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(
-                Icons.attach_money_rounded,
+                Icons.fireplace_rounded,
                 size: MediaQuery.of(context).size.height / 6,
-                color: Colors.white,
+                color: Colors.amber.shade900,
               ),
               Text(
-                "Crypto\nWallet",
+                "firechat",
+                textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Colors.white,
-                  fontSize: MediaQuery.of(context).size.height / 30,
+                  color: Colors.amber.shade900,
+                  fontSize: MediaQuery.of(context).size.height / 18,
                 ),
               ),
               _padding(),
               _loginFormFieldGenerator(
                 _emailField,
                 "Email",
-                "johndoe@flutterfire.com",
+                " johndoe@flutterfire.com",
                 false,
                 1.3,
               ), //  Create Email TextFormField
@@ -141,7 +125,7 @@ class _AuthenticationState extends State<Authentication> {
               _loginFormFieldGenerator(
                 _passwordField,
                 "Password",
-                "p@ssw0rd",
+                " p@ssw0rd",
                 true,
                 1.3,
               ), //  Create Email TextFormField
