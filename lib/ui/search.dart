@@ -10,6 +10,8 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   final Color _amber = Colors.amber.shade900;
 
+  TextEditingController searchTextController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,6 +52,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 children: [
                   Expanded(
                     child: TextField(
+                      controller: searchTextController,
                       style: TextStyle(
                         color: Colors.white,
                       ),
