@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fire_chat/net/flutterfire.dart';
+import 'package:fire_chat/particles/particles_flutter.dart';
 
 import 'home_view.dart';
 
@@ -26,11 +27,12 @@ class _AuthenticationState extends State<Authentication> {
       width: MediaQuery.of(context).size.width / widthFactor,
       child: TextFormField(
         style: TextStyle(
-          color: Colors.amber.shade900,
+          color: Colors.white,
           fontSize: 20.0,
         ),
         controller: controller,
         obscureText: hideText,
+        cursorColor: Colors.amber.shade900,
         decoration: InputDecoration(
           labelText: label,
           labelStyle: TextStyle(
@@ -38,7 +40,12 @@ class _AuthenticationState extends State<Authentication> {
           ),
           hintText: hint,
           hintStyle: TextStyle(
-            color: Colors.grey,
+            color: Colors.white.withAlpha(100),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.amber.shade900,
+            ),
           ),
         ),
       ),
@@ -57,7 +64,7 @@ class _AuthenticationState extends State<Authentication> {
       height: height,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(25.0),
-        color: Colors.amber.shade900,
+        color: Colors.white,
       ),
       child: MaterialButton(
         onPressed: () async {
@@ -75,7 +82,7 @@ class _AuthenticationState extends State<Authentication> {
         child: Text(
           name,
           style: TextStyle(
-            color: Colors.white,
+            color: Colors.black,
             fontSize: 20.0,
           ),
         ),
@@ -90,134 +97,91 @@ class _AuthenticationState extends State<Authentication> {
 
   @override
   Widget build(BuildContext context) {
-    if (MediaQuery.of(context).orientation == Orientation.portrait) {
-      return Scaffold(
-        body: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-            color: Colors.white,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.fireplace_rounded,
-                size: MediaQuery.of(context).size.height / 6,
-                color: Colors.amber.shade900,
-              ),
-              Text(
-                "firechat",
-                textAlign: TextAlign.center,
-                style: TextStyle(
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.black,
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+        ),
+        child: Stack(
+          alignment: AlignmentDirectional.center,
+          children: [
+            CircularParticle(
+              key: UniqueKey(),
+              awayRadius: 100,
+              numberOfParticles: 200,
+              speedOfParticles: 0.2,
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              onTapAnimation: true,
+              particleColor: Colors.white.withAlpha(18),
+              awayAnimationDuration: Duration(milliseconds: 1000),
+              maxParticleSize: 5,
+              isRandSize: true,
+              isRandomColor: false,
+              // randColorList: [
+              //   Colors.amber.withAlpha(150),
+              // ],
+              awayAnimationCurve: Curves.easeInOutBack,
+              enableHover: false,
+              // hoverColor: Colors.white,
+              // hoverRadius: 90,
+              connectDots: true, //not recommended
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.fireplace_rounded,
+                  size: MediaQuery.of(context).size.height / 6,
                   color: Colors.amber.shade900,
-                  fontSize: MediaQuery.of(context).size.height / 18,
                 ),
-              ),
-              _padding(),
-              _loginFormFieldGenerator(
-                _emailField,
-                "Email",
-                " johndoe@flutterfire.com",
-                false,
-                1.3,
-              ), //  Create Email TextFormField
-              _padding(), //  Padding
-              _loginFormFieldGenerator(
-                _passwordField,
-                "Password",
-                " p@ssw0rd",
-                true,
-                1.3,
-              ), //  Create Email TextFormField
-              _padding(), //  Padding
-              _generateButton(
-                "Login",
-                signIn,
-                1.4,
-                45.0,
-              ), //  Create Login button
-              _padding(), //  Padding
-              _generateButton(
-                "Register",
-                register,
-                1.4,
-                45.0,
-              ), //  Create Register button
-            ],
-          ),
-        ),
-      );
-    } else {
-      return Scaffold(
-        body: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-            color: Colors.blueAccent,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.attach_money_rounded,
-                    size: MediaQuery.of(context).size.height / 4,
+                Text(
+                  "firechat",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
                     color: Colors.white,
+                    fontSize: MediaQuery.of(context).size.height / 18,
                   ),
-                  Text(
-                    "Crypto\nWallet",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: MediaQuery.of(context).size.height / 20,
-                    ),
-                  ),
-                ],
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _loginFormFieldGenerator(
-                    _emailField,
-                    "Email",
-                    "johndoe@flutterfire.com",
-                    false,
-                    3,
-                  ), //  Create Email TextFormField
-                  _padding(), //  Padding
-                  _loginFormFieldGenerator(
-                    _passwordField,
-                    "Password",
-                    "p@ssw0rd",
-                    true,
-                    3,
-                  ), //  Create Email TextFormField //  Padding
-                ],
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _generateButton(
-                    "Login",
-                    signIn,
-                    6,
-                    45.0,
-                  ), //  Create Login button
-                  _padding(), //  Padding
-                  _generateButton(
-                    "Register",
-                    register,
-                    6,
-                    45.0,
-                  ),
-                ],
-              )
-            ],
-          ),
+                ),
+                _padding(),
+                _loginFormFieldGenerator(
+                  _emailField,
+                  "Email",
+                  " johndoe@flutterfire.com",
+                  false,
+                  1.3,
+                ), //  Create Email TextFormField
+                _padding(), //  Padding
+                _loginFormFieldGenerator(
+                  _passwordField,
+                  "Password",
+                  " p@ssw0rd",
+                  true,
+                  1.3,
+                ), //  Create Email TextFormField
+                _padding(), //  Padding
+                _generateButton(
+                  "Login",
+                  signIn,
+                  1.3,
+                  45.0,
+                ), //  Create Login button
+                _padding(), //  Padding
+                _generateButton(
+                  "Register",
+                  register,
+                  1.3,
+                  45.0,
+                ), //  Create Register button
+              ],
+            ),
+          ],
         ),
-      );
-    }
+      ),
+    );
   }
 }
