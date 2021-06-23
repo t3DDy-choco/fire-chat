@@ -10,9 +10,13 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: Text("Welcome to Home!"),
+    return MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: Text(
+            "Welcome to firechat!",
+          ),
+        ),
       ),
     );
   }
