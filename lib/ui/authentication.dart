@@ -164,13 +164,37 @@ class _AuthenticationState extends State<Authentication> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _generateButton("Login", signIn, 3.3, 45.0),
+                    _generateButton("Login", authService.signIn, 3.3, 45.0),
                     _padding(35),
-                    _generateButton("Google Sign In", signIn, 2.5, 45.0),
+                    Container(
+                      width: MediaQuery.of(context).size.width / 2.5,
+                      height: 45.0,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25.0),
+                        color: Colors.white,
+                      ),
+                      child: MaterialButton(
+                        onPressed: () async {
+                          bool shouldNavigate = await authService.googleSignIn(
+                              _emailField.text, _passwordField.text);
+                          if (shouldNavigate) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HomeView(),
+                              ),
+                            );
+                          }
+                        },
+                        child: Image(
+                          image: AssetImage('assets/google_anim.gif'),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
                 _padding(35),
-                _generateButton("Register", register, 1.3, 45.0),
+                _generateButton("Register", authService.register, 1.3, 45.0),
               ],
             ),
           ],
