@@ -131,15 +131,12 @@ class _AuthenticationState extends State<Authentication> {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  height: MediaQuery.of(context).size.height / 6,
-                  child: Image(image: AssetImage('assets/fire_eye_square')),
-                ),
                 Icon(
                   Icons.fireplace_rounded,
                   size: MediaQuery.of(context).size.height / 6,
                   color: Colors.amber.shade900,
                 ),
+                _padding(35),
                 Text(
                   "firechat",
                   textAlign: TextAlign.center,
