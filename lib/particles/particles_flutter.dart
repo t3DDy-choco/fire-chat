@@ -62,7 +62,6 @@ class _CircularParticleState extends State<CircularParticle>
   late double dx;
   late double dy;
   List<double> randomDouble = [];
-  late AnimationController awayAnimationController;
   _CircularParticleState();
   List<double> randomSize = [];
   List<int> hoverIndex = [];
@@ -117,7 +116,6 @@ class _CircularParticleState extends State<CircularParticle>
 
   @override
   void dispose() {
-    awayAnimationController.dispose();
     controller.dispose();
     super.dispose();
   }
@@ -149,111 +147,9 @@ class _CircularParticleState extends State<CircularParticle>
     }
   }
 
-  onTapGesture(double tapdx, double tapdy) {
-    awayAnimationController = AnimationController(
-        duration: widget.awayAnimationDuration, vsync: this);
-    awayAnimationController.reset();
-    double directiondx;
-    double directiondy;
-    List<double> distance = [];
-    double noAnimationDistance = 0;
-
-    if (widget.onTapAnimation) {
-      List<Animation<Offset>> awayAnimation = [];
-      awayAnimationController.forward();
-      for (int index = 0; index < offsets.length; index++) {
-        distance.add(sqrt(
-            ((tapdx - offsets[index].dx) * (tapdx - offsets[index].dx)) +
-                ((tapdy - offsets[index].dy) * (tapdy - offsets[index].dy))));
-        directiondx = (tapdx - offsets[index].dx) / distance[index];
-        directiondy = (tapdy - offsets[index].dy) / distance[index];
-        Offset begin = offsets[index];
-        awayAnimation.add(Tween<Offset>(
-                begin: begin,
-                end: Offset(
-                  offsets[index].dx -
-                      (widget.awayRadius - distance[index]) * directiondx,
-                  offsets[index].dy -
-                      (widget.awayRadius - distance[index]) * directiondy,
-                ))
-            .animate(CurvedAnimation(
-                parent: awayAnimationController,
-                curve: widget.awayAnimationCurve))
-              ..addListener(() {
-                if (distance[index] < widget.awayRadius)
-                  setState(() {
-                    offsets[index] = awayAnimation[index].value;
-                  });
-                if (awayAnimationController.isCompleted &&
-                    index == offsets.length - 1) {
-                  awayAnimationController.dispose();
-                }
-              }));
-      }
-    } else {
-      for (int index = 0; index < offsets.length; index++) {
-        noAnimationDistance = sqrt(
-            ((tapdx - offsets[index].dx) * (tapdx - offsets[index].dx)) +
-                ((tapdy - offsets[index].dy) * (tapdy - offsets[index].dy)));
-        directiondx = (tapdx - offsets[index].dx) / noAnimationDistance;
-        directiondy = (tapdy - offsets[index].dy) / noAnimationDistance;
-        if (noAnimationDistance < widget.awayRadius) {
-          setState(() {
-            offsets[index] = Offset(
-              offsets[index].dx -
-                  (widget.awayRadius - noAnimationDistance) * directiondx,
-              offsets[index].dy -
-                  (widget.awayRadius - noAnimationDistance) * directiondy,
-            );
-          });
-        }
-      }
-    }
-  }
-
-  onHover(tapdx, tapdy) {
-    {
-      awayAnimationController = AnimationController(
-          duration: widget.awayAnimationDuration, vsync: this);
-      awayAnimationController.reset();
-
-      double noAnimationDistance = 0;
-      for (int index = 0; index < offsets.length; index++) {
-        noAnimationDistance = sqrt(
-            ((tapdx - offsets[index].dx) * (tapdx - offsets[index].dx)) +
-                ((tapdy - offsets[index].dy) * (tapdy - offsets[index].dy)));
-
-        if (noAnimationDistance < widget.hoverRadius) {
-          setState(() {
-            if (hoverIndex.length >
-                (widget.numberOfParticles * 0.1).floor() + 1) {
-              hoverIndex.removeAt(0);
-            }
-            hoverIndex.add(index);
-          });
-        }
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTapDown: (TapDownDetails details) {
-        RenderBox getBox = context.findRenderObject() as RenderBox;
-        onTapGesture(getBox.globalToLocal(details.globalPosition).dx,
-            getBox.globalToLocal(details.globalPosition).dy);
-      },
-      onPanUpdate: (DragUpdateDetails details) {
-        if (widget.enableHover) {
-          RenderBox getBox = context.findRenderObject() as RenderBox;
-          onHover(getBox.globalToLocal(details.globalPosition).dx,
-              getBox.globalToLocal(details.globalPosition).dy);
-        }
-      },
-      onPanEnd: (DragEndDetails details) {
-        hoverIndex = [];
-      },
       child: SizedBox(
         height: widget.height,
         width: widget.width,
@@ -266,9 +162,6 @@ class _CircularParticleState extends State<CircularParticle>
               randSize: randomSize,
               isRandSize: widget.isRandSize,
               randColorList: widget.randColorList,
-              hoverIndex: hoverIndex,
-              enableHover: widget.enableHover,
-              hoverColor: widget.hoverColor,
               lineOffsets: lineOffset),
         ),
       ),

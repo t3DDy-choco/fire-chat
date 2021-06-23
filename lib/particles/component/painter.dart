@@ -8,17 +8,12 @@ class ParticlePainter extends CustomPainter {
   final double maxParticleSize;
   static Color randomColor = Colors.blue;
   static late Paint randomColorPaint;
-  final Paint hoverPaint;
   final List<double> randSize;
   final bool isRandSize;
   final List<Color> randColorList;
-  final List<int> hoverIndex;
-  final bool enableHover;
-  final Color hoverColor;
   final List<List> lineOffsets;
 
   ParticlePainter({
-    required this.enableHover,
     required this.randColorList,
     required this.isRandSize,
     required this.maxParticleSize,
@@ -26,11 +21,8 @@ class ParticlePainter extends CustomPainter {
     required this.isRandomColor,
     required this.particleColor,
     required this.randSize,
-    required this.hoverIndex,
-    required this.hoverColor,
     required this.lineOffsets,
-  })  : constColorPaint = Paint()..color = particleColor,
-        hoverPaint = Paint()..color = hoverColor;
+  }) : constColorPaint = Paint()..color = particleColor;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -42,13 +34,13 @@ class ParticlePainter extends CustomPainter {
         canvas.drawCircle(
             offsets[index],
             isRandSize ? maxParticleSize * (randSize[index]) : maxParticleSize,
-            hoverIndex.contains(index) ? hoverPaint : randomColorPaint);
+            constColorPaint);
       } else {
         randomColorPaint = Paint()..color = randomColor;
         canvas.drawCircle(
             offsets[index],
             isRandSize ? maxParticleSize * (randSize[index]) : maxParticleSize,
-            hoverIndex.contains(index) ? hoverPaint : constColorPaint);
+            constColorPaint);
       }
     }
     lineOffsets.forEach(

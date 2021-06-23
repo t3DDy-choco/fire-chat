@@ -42,6 +42,11 @@ class _AuthenticationState extends State<Authentication> {
           hintStyle: TextStyle(
             color: Colors.white.withAlpha(100),
           ),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.white,
+            ),
+          ),
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(
               color: Colors.amber.shade900,
@@ -91,8 +96,9 @@ class _AuthenticationState extends State<Authentication> {
   }
 
   // Created padding element
-  SizedBox _padding() => SizedBox(
-        height: MediaQuery.of(context).size.height / 35,
+  SizedBox _padding(int size) => SizedBox(
+        height: MediaQuery.of(context).size.height / size,
+        width: MediaQuery.of(context).size.height / size,
       );
 
   @override
@@ -116,20 +122,11 @@ class _AuthenticationState extends State<Authentication> {
               speedOfParticles: 0.2,
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
-              onTapAnimation: true,
               particleColor: Colors.white.withAlpha(18),
-              awayAnimationDuration: Duration(milliseconds: 1000),
               maxParticleSize: 5,
               isRandSize: true,
               isRandomColor: false,
-              // randColorList: [
-              //   Colors.amber.withAlpha(150),
-              // ],
-              awayAnimationCurve: Curves.easeInOutBack,
-              enableHover: false,
-              // hoverColor: Colors.white,
-              // hoverRadius: 90,
-              connectDots: true, //not recommended
+              connectDots: true,
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -147,36 +144,33 @@ class _AuthenticationState extends State<Authentication> {
                     fontSize: MediaQuery.of(context).size.height / 18,
                   ),
                 ),
-                _padding(),
+                _padding(35),
                 _loginFormFieldGenerator(
                   _emailField,
                   "Email",
                   " johndoe@flutterfire.com",
                   false,
                   1.3,
-                ), //  Create Email TextFormField
-                _padding(), //  Padding
+                ),
+                _padding(35),
                 _loginFormFieldGenerator(
                   _passwordField,
                   "Password",
                   " p@ssw0rd",
                   true,
                   1.3,
-                ), //  Create Email TextFormField
-                _padding(), //  Padding
-                _generateButton(
-                  "Login",
-                  signIn,
-                  1.3,
-                  45.0,
-                ), //  Create Login button
-                _padding(), //  Padding
-                _generateButton(
-                  "Register",
-                  register,
-                  1.3,
-                  45.0,
-                ), //  Create Register button
+                ),
+                _padding(35),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _generateButton("Login", signIn, 3.3, 45.0),
+                    _padding(35),
+                    _generateButton("Google Sign In", signIn, 2.5, 45.0),
+                  ],
+                ),
+                _padding(35),
+                _generateButton("Register", register, 1.3, 45.0),
               ],
             ),
           ],
