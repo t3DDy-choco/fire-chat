@@ -92,8 +92,9 @@ class AuthService {
     );
   }
 
-  void signOut() {
+  void signOut() async {
     _auth.signOut();
+    _googleSignIn.signOut();
   }
 }
 
