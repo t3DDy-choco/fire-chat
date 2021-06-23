@@ -164,10 +164,10 @@ class _AuthenticationState extends State<Authentication> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _generateButton("Login", authService.signIn, 3.3, 45.0),
+                    _generateButton("Login", authService.signIn, 2.7, 45.0),
                     _padding(35),
                     Container(
-                      width: MediaQuery.of(context).size.width / 2.5,
+                      width: MediaQuery.of(context).size.width / 3.0,
                       height: 45.0,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(25.0),
@@ -186,8 +186,11 @@ class _AuthenticationState extends State<Authentication> {
                             );
                           }
                         },
-                        child: Image(
-                          image: AssetImage('assets/google_anim.gif'),
+                        child: Padding(
+                          padding: EdgeInsets.all(2.0),
+                          child: Image(
+                            image: AssetImage('assets/google_anim.gif'),
+                          ),
                         ),
                       ),
                     ),
