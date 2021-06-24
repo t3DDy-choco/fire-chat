@@ -12,6 +12,19 @@ class DBService {
         .get();
   }
 
+  getUserByEmail(String email) async {
+    return await authService
+        .getDB()
+        .collection('users')
+        .where('email', isEqualTo: email)
+        .get();
+  }
+
+  String getUserNameFromEmail(String email, snapshot) {
+    final QuerySnapshot snapshot = dbService.getUserByEmail(email);
+    return (snapshot.docs[0].data() as dynamic)['displayName'];
+  }
+
   void updateUserData(User? user) async {
     DocumentReference ref =
         authService.getDB().collection('users').doc(user!.uid);
@@ -29,10 +42,43 @@ class DBService {
   }
 
   createChat(String chatID, List<String?> chatBetween) {
-    authService.getDB().collection('chats').doc('chatID').set({
+    authService.getDB().collection('chats').doc(chatID).set({
       'chatID': chatID,
       'users': chatBetween,
     });
+  }
+
+  sendMessage(String chatID, String message) {
+    Map<String, dynamic> messageMap = {
+      'message': message,
+      'from': authService.getCurrentUserName() as String,
+      'fromEmail': authService.getCurrentEmail() as String,
+      'time': DateTime.now().millisecondsSinceEpoch,
+    };
+    authService
+        .getDB()
+        .collection('chats')
+        .doc(chatID)
+        .collection('convo')
+        .add(messageMap);
+  }
+
+  getConvo(chatID) async {
+    return await authService
+        .getDB()
+        .collection('chats')
+        .doc(chatID)
+        .collection('convo')
+        .orderBy('time', descending: false)
+        .snapshots();
+  }
+
+  getChats(String? email) async {
+    return await authService
+        .getDB()
+        .collection('chats')
+        .where('users', arrayContains: email)
+        .snapshots();
   }
 }
 

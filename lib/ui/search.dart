@@ -31,13 +31,17 @@ class _SearchScreenState extends State<SearchScreen> {
             shrinkWrap: true,
             itemCount: searchSnapshot!.docs.length,
             itemBuilder: (context, index) {
-              return SearchTile(
-                displayName: (searchSnapshot!.docs[index].data()
-                    as dynamic)!['displayName'],
-                email:
-                    (searchSnapshot!.docs[index].data() as dynamic)!['email'],
-                startNewChat: startNewChat,
-              );
+              return ((searchSnapshot!.docs[index].data()
+                          as dynamic)!['email'] !=
+                      authService.getCurrentEmail())
+                  ? SearchTile(
+                      displayName: (searchSnapshot!.docs[index].data()
+                          as dynamic)!['displayName'],
+                      email: (searchSnapshot!.docs[index].data()
+                          as dynamic)!['email'],
+                      startNewChat: startNewChat,
+                    )
+                  : Container();
             })
         : Container();
   }
@@ -50,14 +54,18 @@ class _SearchScreenState extends State<SearchScreen> {
     }
   }
 
-  startNewChat(String email, BuildContext context) {
+  startNewChat(BuildContext context, String displayName, String email) {
     String? myEmail = authService.getCurrentEmail();
-    List<String?> chatBetween = [email, myEmail];
+    String? myDisplayName = authService.getCurrentUserName();
+    List<String?> chatBetween = [email, myEmail, displayName, myDisplayName];
     String chatID = getChatID(email, myEmail!);
     dbService.createChat(chatID, chatBetween);
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => Chat()),
+      MaterialPageRoute(
+          builder: (context) => Chat(
+                chatID: chatID,
+              )),
     );
   }
 
@@ -130,11 +138,11 @@ class SearchTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 10, right: 10, left: 10),
+      margin: EdgeInsets.only(bottom: 8, right: 8, left: 8),
       padding: EdgeInsets.only(top: 10, bottom: 10, left: 30),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
-        color: Colors.black,
+        color: Colors.black87,
       ),
       child: Row(
         children: [
@@ -162,7 +170,7 @@ class SearchTile extends StatelessWidget {
           FirePadding(size: 35),
           GestureDetector(
             onTap: () {
-              startNewChat(email, context);
+              startNewChat(context, displayName, email);
             },
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 10),
