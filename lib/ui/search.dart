@@ -17,12 +17,14 @@ class _SearchScreenState extends State<SearchScreen> {
   TextEditingController searchTextController = TextEditingController();
 
   initiateSearch() {
-    dbService.getUserByEmail(searchTextController.text).then((val) {
+    dbService.getUserByDisplayName(searchTextController.text).then((val) {
       setState(() {
         searchSnapshot = val;
       });
     });
   }
+
+  startNewChat(String userName) {}
 
   Widget searchList() {
     return (searchSnapshot != null)

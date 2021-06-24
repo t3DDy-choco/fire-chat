@@ -4,11 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'auth_service.dart';
 
 class DBService {
-  getUserByEmail(String email) async {
+  getUserByDisplayName(String displayName) async {
     return await authService
         .getDB()
         .collection('users')
-        .where('email', isEqualTo: email)
+        .where('displayName', isEqualTo: displayName)
         .get();
   }
 
@@ -26,6 +26,13 @@ class DBService {
       },
       SetOptions(merge: true),
     );
+  }
+
+  createChat(String chatID) {
+    authService.getDB().collection('chats').doc('chatID').set({
+      'chatID': chatID,
+      'users': <String>[],
+    });
   }
 }
 
