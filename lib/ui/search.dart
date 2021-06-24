@@ -126,16 +126,17 @@ class SearchTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(10),
-      padding: EdgeInsets.symmetric(vertical: 10),
+      margin: EdgeInsets.only(bottom: 10, right: 10, left: 10),
+      padding: EdgeInsets.only(top: 10, bottom: 10, left: 30),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(50),
         color: Colors.black,
       ),
       child: Row(
         children: [
           Expanded(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   displayName,
@@ -155,20 +156,17 @@ class SearchTile extends StatelessWidget {
             ),
           ),
           FirePadding(size: 35),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 10),
-            width: MediaQuery.of(context).size.width / 3,
-            height: 45,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25.0),
-              color: Colors.amber.shade900,
-            ),
-            child: MaterialButton(
-              onPressed: () {},
-              child: Padding(
-                padding: EdgeInsets.all(2.0),
-                child: Image(
-                  image: AssetImage('fire_round_square.gif'),
+          GestureDetector(
+            onTap: () {},
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 10),
+              width: 45,
+              height: 45,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25.0),
+                color: Colors.amber.shade900,
+                image: DecorationImage(
+                  image: AssetImage('assets/fire_round_square.gif'),
                 ),
               ),
             ),
