@@ -95,7 +95,8 @@ class AuthService {
         'uid': user.uid,
         'email': user.email,
         'photoURL': user.photoURL,
-        'displayName': user.displayName,
+        'displayName':
+            (user.displayName != null) ? user.displayName : user.email,
         'lastSeen': DateTime.now(),
       },
       SetOptions(merge: true),
