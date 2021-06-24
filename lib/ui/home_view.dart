@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fire_chat/net/auth_service.dart';
 import 'package:fire_chat/net/db_service.dart';
 import 'package:fire_chat/ui/chat.dart';
@@ -30,21 +29,13 @@ class _HomeViewState extends State<HomeView> {
                   shrinkWrap: true,
                   itemCount: snapshot.data.docs.length,
                   itemBuilder: (context, index) {
-                    String email = snapshot.data.docs[index]
-                        .data()['chatID']
-                        .toString()
-                        .replaceAll('_', '')
-                        .replaceAll(
-                          authService.getCurrentEmail().toString(),
-                          '',
-                        );
                     String name = snapshot.data.docs[index]
                         .data()['users'][(authService.getCurrentEmail() ==
                                 snapshot.data.docs[index]
                                     .data()['users'][0]
                                     .toString())
-                            ? 2
-                            : 3]
+                            ? 3
+                            : 2]
                         .toString();
                     return ChatTile(name,
                         snapshot.data.docs[index].data()['chatID'].toString());
