@@ -30,6 +30,7 @@ class AuthService {
   }
 
   FirebaseFirestore getDB() => _db;
+  String? getCurrentUserName() => authService._auth.currentUser!.displayName;
 
   Future<bool> isSignedIn() async {
     if (authService._auth.currentUser != null ||

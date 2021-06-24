@@ -28,10 +28,10 @@ class DBService {
     );
   }
 
-  createChat(String chatID) {
+  createChat(String chatID, List<String?> chatBetween) {
     authService.getDB().collection('chats').doc('chatID').set({
       'chatID': chatID,
-      'users': <String>[],
+      'users': chatBetween,
     });
   }
 }

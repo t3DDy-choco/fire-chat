@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fire_chat/net/auth_service.dart';
 import 'package:fire_chat/net/database.dart';
 import 'package:fire_chat/ui/widgets.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,25 @@ class _SearchScreenState extends State<SearchScreen> {
     });
   }
 
-  startNewChat(String userName) {}
+  startNewChat(String userName) {
+    String? myName = authService.getCurrentUserName();
+    List<String?> chatBetween = [userName, myName];
+    String chatID = getChatID(userName, myName!);
+    dbService.createChat(chatID, chatBetween);
+  }
+
+  String getChatID(String a, String b) {
+    QuerySnapshot u1 = dbService.getUserByDisplayName(a);
+    String uid1 = (u1.docs[0].data() as dynamic)['uid'];
+    QuerySnapshot u2 = dbService.getUserByDisplayName(b);
+    String uid2 = (u2.docs[0].data() as dynamic)['uid'];
+
+    if (uid1.compareTo(uid2) == -1) {
+      return '$a\_$b';
+    } else {
+      return '$b\_$a';
+    }
+  }
 
   Widget searchList() {
     return (searchSnapshot != null)
