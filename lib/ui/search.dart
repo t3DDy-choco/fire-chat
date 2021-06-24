@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fire_chat/net/auth_service.dart';
-import 'package:fire_chat/net/database.dart';
-import 'package:fire_chat/ui/widgets.dart';
+import '/net/auth_service.dart';
+import '/net/database.dart';
+import 'chat.dart';
 import 'package:flutter/material.dart';
+import 'widgets.dart';
 
 class SearchScreen extends StatefulWidget {
   SearchScreen({Key? key}) : super(key: key);
@@ -12,7 +13,6 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  final Color _amber = Colors.amber.shade900;
   QuerySnapshot? searchSnapshot;
 
   TextEditingController searchTextController = TextEditingController();
@@ -23,26 +23,6 @@ class _SearchScreenState extends State<SearchScreen> {
         searchSnapshot = val;
       });
     });
-  }
-
-  startNewChat(String userName) {
-    String? myName = authService.getCurrentUserName();
-    List<String?> chatBetween = [userName, myName];
-    String chatID = getChatID(userName, myName!);
-    dbService.createChat(chatID, chatBetween);
-  }
-
-  String getChatID(String a, String b) {
-    QuerySnapshot u1 = dbService.getUserByDisplayName(a);
-    String uid1 = (u1.docs[0].data() as dynamic)['uid'];
-    QuerySnapshot u2 = dbService.getUserByDisplayName(b);
-    String uid2 = (u2.docs[0].data() as dynamic)['uid'];
-
-    if (uid1.compareTo(uid2) == -1) {
-      return '$a\_$b';
-    } else {
-      return '$b\_$a';
-    }
   }
 
   Widget searchList() {
@@ -56,9 +36,29 @@ class _SearchScreenState extends State<SearchScreen> {
                     as dynamic)!['displayName'],
                 email:
                     (searchSnapshot!.docs[index].data() as dynamic)!['email'],
+                startNewChat: startNewChat,
               );
             })
         : Container();
+  }
+
+  String getChatID(String a, String b) {
+    if (a.compareTo(b) == -1) {
+      return '$a\_$b';
+    } else {
+      return '$b\_$a';
+    }
+  }
+
+  startNewChat(String email, BuildContext context) {
+    String? myEmail = authService.getCurrentEmail();
+    List<String?> chatBetween = [email, myEmail];
+    String chatID = getChatID(email, myEmail!);
+    dbService.createChat(chatID, chatBetween);
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => Chat()),
+    );
   }
 
   @override
@@ -69,26 +69,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_rounded),
-          onPressed: () => Navigator.of(context).pop(),
-          color: _amber,
-          hoverColor: Colors.transparent,
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-        ),
-        centerTitle: true,
-        title: Text(
-          'f i r e c h a t',
-          style: TextStyle(
-            fontFamily: 'monospace',
-            fontWeight: FontWeight.bold,
-            color: _amber,
-          ),
-        ),
-        backgroundColor: Colors.black,
-      ),
+      appBar: fireAppBar(context, "f i r e c h a t"),
       body: Container(
         child: Column(
           children: [
@@ -99,7 +80,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 vertical: 2,
               ),
               decoration: BoxDecoration(
-                color: _amber,
+                color: MyColors.amber,
                 borderRadius: BorderRadius.circular(50),
               ),
               child: Row(
@@ -137,11 +118,13 @@ class _SearchScreenState extends State<SearchScreen> {
 class SearchTile extends StatelessWidget {
   final String displayName;
   final String email;
+  final startNewChat;
 
   const SearchTile({
     Key? key,
     required this.displayName,
     required this.email,
+    required this.startNewChat,
   }) : super(key: key);
 
   @override
@@ -178,7 +161,9 @@ class SearchTile extends StatelessWidget {
           ),
           FirePadding(size: 35),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              startNewChat(email, context);
+            },
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 10),
               width: 45,

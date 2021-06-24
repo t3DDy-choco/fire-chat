@@ -31,6 +31,7 @@ class AuthService {
 
   FirebaseFirestore getDB() => _db;
   String? getCurrentUserName() => authService._auth.currentUser!.displayName;
+  String? getCurrentEmail() => authService._auth.currentUser!.email;
 
   Future<bool> isSignedIn() async {
     if (authService._auth.currentUser != null ||
