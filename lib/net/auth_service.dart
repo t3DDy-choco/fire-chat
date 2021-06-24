@@ -3,7 +3,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'database.dart';
+import 'db_service.dart';
 
 class AuthService {
   final GoogleSignIn _googleSignIn = GoogleSignIn();

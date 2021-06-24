@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '/net/auth_service.dart';
-import '/net/database.dart';
+import '../net/db_service.dart';
 import 'chat.dart';
 import 'package:flutter/material.dart';
 import 'widgets.dart';
