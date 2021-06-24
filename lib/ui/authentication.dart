@@ -1,3 +1,4 @@
+import 'package:fire_chat/ui/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:fire_chat/net/auth_service.dart';
 import 'package:fire_chat/particles/particles_flutter.dart';
@@ -95,12 +96,6 @@ class _AuthenticationState extends State<Authentication> {
     );
   }
 
-  // Created padding element
-  SizedBox _padding(int size) => SizedBox(
-        height: MediaQuery.of(context).size.height / size,
-        width: MediaQuery.of(context).size.height / size,
-      );
-
   @override
   void initState() {
     super.initState();
@@ -157,7 +152,7 @@ class _AuthenticationState extends State<Authentication> {
                   size: MediaQuery.of(context).size.height / 6,
                   color: Colors.amber.shade900,
                 ),
-                _padding(35),
+                FirePadding(size: 35),
                 Text(
                   "firechat",
                   textAlign: TextAlign.center,
@@ -166,7 +161,7 @@ class _AuthenticationState extends State<Authentication> {
                     fontSize: MediaQuery.of(context).size.height / 18,
                   ),
                 ),
-                _padding(35),
+                FirePadding(size: 35),
                 _loginFormFieldGenerator(
                   _emailField,
                   "Email",
@@ -174,7 +169,7 @@ class _AuthenticationState extends State<Authentication> {
                   false,
                   1.3,
                 ),
-                _padding(35),
+                FirePadding(size: 35),
                 _loginFormFieldGenerator(
                   _passwordField,
                   "Password",
@@ -182,12 +177,12 @@ class _AuthenticationState extends State<Authentication> {
                   true,
                   1.3,
                 ),
-                _padding(35),
+                FirePadding(size: 35),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _generateButton("Login", authService.signIn, 2.7, 45.0),
-                    _padding(35),
+                    FirePadding(size: 35),
                     Container(
                       width: MediaQuery.of(context).size.width / 3.0,
                       height: 45.0,
@@ -197,8 +192,8 @@ class _AuthenticationState extends State<Authentication> {
                       ),
                       child: MaterialButton(
                         onPressed: () async {
-                          bool shouldNavigate = await authService.googleSignIn(
-                              _emailField.text, _passwordField.text);
+                          bool shouldNavigate =
+                              await authService.googleSignIn();
                           if (shouldNavigate) {
                             Navigator.push(
                               context,
@@ -218,7 +213,7 @@ class _AuthenticationState extends State<Authentication> {
                     ),
                   ],
                 ),
-                _padding(35),
+                FirePadding(size: 35),
                 _generateButton("Register", authService.register, 1.3, 45.0),
               ],
             ),

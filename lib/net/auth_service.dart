@@ -3,6 +3,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rxdart/rxdart.dart';
 
+import 'database.dart';
+
 class AuthService {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -27,6 +29,8 @@ class AuthService {
     });
   }
 
+  FirebaseFirestore getDB() => _db;
+
   Future<bool> isSignedIn() async {
     if (authService._auth.currentUser != null ||
         authService._googleSignIn.currentUser != null) {
@@ -42,7 +46,7 @@ class AuthService {
         email: email,
         password: password,
       );
-      updateUserData(_auth.currentUser);
+      dbService.updateUserData(_auth.currentUser);
       return true;
     } catch (e) {
       print(e);
@@ -50,7 +54,7 @@ class AuthService {
     }
   }
 
-  Future<bool> googleSignIn(String email, String password) async {
+  Future<bool> googleSignIn() async {
     loading.add(true);
     GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
     GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
@@ -62,7 +66,7 @@ class AuthService {
         await _auth.signInWithCredential(credential);
     User? user = authResult.user;
 
-    updateUserData(user);
+    dbService.updateUserData(user);
     print('Signed in ' + user!.displayName.toString());
     loading.add(false);
     return true;
@@ -74,6 +78,7 @@ class AuthService {
         email: email,
         password: password,
       );
+      dbService.updateUserData(_auth.currentUser);
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -86,21 +91,6 @@ class AuthService {
       print(e);
       return false;
     }
-  }
-
-  void updateUserData(User? user) async {
-    DocumentReference ref = _db.collection('users').doc(user!.uid);
-    return ref.set(
-      {
-        'uid': user.uid,
-        'email': user.email,
-        'photoURL': user.photoURL,
-        'displayName':
-            (user.displayName != null) ? user.displayName : user.email,
-        'lastSeen': DateTime.now(),
-      },
-      SetOptions(merge: true),
-    );
   }
 
   void signOut() async {
